@@ -17,7 +17,8 @@ app.get('/',(req,res)=>{
 app.post('/userdata',async(req,res)=>{
     console.log("yash");
     // console.log(req.body);
-    // const name=req.body.name
+    const name=req.body.name
+    console.log(name);
     // const password=req.body.password;
     // const email=req=body.email;
     // const cpassword=req.body.cpassword;
@@ -26,8 +27,8 @@ app.post('/userdata',async(req,res)=>{
 try{
     
 const user=new User(req.body)
- await user.save()
-
+ const data=await user.save()
+console.log(data);
 }
 catch(error){
     console.log(error);
