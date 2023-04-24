@@ -1,41 +1,48 @@
-const express=require('express')
-const User = require('./model/userSchema.js')
-const app=express()
-const port=5000
+const express=require('express');
+var bodyparser=require("body-parser")
+const app = express();
+require("./models/db/conn.js")
 
+const User=require("./models/userSchema")
+const Admin=require("./models/AdminSchema")
+const RentBike=require("./models/Addbike") 
 
-
-
-require("./db/index.js")
-app.get('/',(req,res)=>{
-    res.send('Hello World')
+app.use(bodyparser.json())
+//userdata
+app.post("/userdata",async(req,res)=>{
     console.log("hello");
+    //console.log(req);
+    const user= new User(req.body)
+    await user.save()
+    // console.log("hello");
+     console.log(user);
+    res.send(user)
+})
+
+//getapi
+app.get("/",(req,res)=>{
+    res.send(" hello world")
+})
+
+//postadmin data
+app.post("/admin",async(req,res)=>{
+
+    const admin= new Admin(req.body)
+    await admin.save()
+    console.log(admin);
+    res.send(admin)
+})
+
+//postbikedata
+
+app.post("/bike",async(req,res)=>{
+
+    const bike=new RentBike(req.body)
+     await bike.save()
+     res.send(bike)
 })
 
 
-
-app.post('/userdata',async(req,res)=>{
-    console.log("yash");
-    // console.log(req.body);
-    const name=req.body.name
-    console.log(name);
-    // const password=req.body.password;
-    // const email=req=body.email;
-    // const cpassword=req.body.cpassword;
-    // const phone=req.body.phone
-
-try{
-    
-const user=new User(req.body)
- const data=await user.save()
-console.log(data);
-}
-catch(error){
-    console.log(error);
-}
-}
-)
-
-app.listen(port,()=>{
-    console.log(`Server is running on port ${port}`)
+app.listen(8000,"127.0.0.1",()=>{
+    console.log("server is started");
 })
